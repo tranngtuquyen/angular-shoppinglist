@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Shopping List</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      div.shoppingList {
+        max-width: 400px;
+        background-color:azure;
+        border-bottom-style: none;
+        border-radius: 10px;
+      }
+      div.shoppingList h1 {
+        text-align: center;
+        color: white;
+        background-color:darkcyan;
+        padding: 10px 10px;
+        margin-top: 0px;
+        border-radius: 10px 10px 0 0;
+      }
+      div.shoppingList ul {
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+      div.shoppingList li {
+        list-style-type: none;
+        border-bottom: 1px solid cadetblue;
+        width: 100%;
+        padding: 10px 20px;
+        margin: 0px;
+      }
+      div.shoppingList li:nth-child(even) {
+        background-color: white;
+      }
+      div.shoppingList span.remove {
+        float: right;
+      }
+      div.shoppingList div.newItem {
+        width: 400px;
+        height: 50px;
+        padding: 10px 5px 10px 75px;
+        background-color: darkcyan;
+        position: relative;
+        border-radius: 0 0 10px 10px;
+      }
+      div.shoppingList input.newItem {
+        margin: 0 auto;
+        padding-left: 20px;
+        border: 1px solid grey;
+        position: relative;
+        float: left;
+        height: 30px;
+      }
+      div.shoppingList button {
+        float: left;
+        height: 30px;
+        background-color: #F2A322;
+        border: 1px solid grey;
+        color: white;
+      }
+
+      .error {
+        color:crimson;
+      }
+    </style>
+  </head>
+  <body>
+      <div ng-app="myApp" ng-controller="myCtrl">
+        <div class="shoppingList">
+        <h1>Shopping List</h1>
+        <ul>
+          <li ng-repeat="product in products">{{product}}<span ng-click="removeProduct($index)" class="remove">&times</span></li>
+        </ul>
+        <div  class="newItem">
+          <input ng-model="newProduct" placeholder="Add new item" class="newItem">
+          <button ng-click="addProduct()" class="addItem">Add</button>
+        </div>
+        </div>
+        
+        <div class="error"><p>{{errorText}}</p></div>
+
+      </div>
+      <script>
+      var app = angular.module("myApp", []);
+      app.controller('myCtrl', function($scope) {
+        $scope.products = ["Milk", "Bread", "Cheese"];
+        $scope.addProduct = function() {
+          $scope.errorText = "";
+          var arr = $scope.products.slice(0);
+          for (var i = 0; i < arr.length; i++) {
+            arr[i] = arr[i].toLowerCase();
+          }
+          if ($scope.newProduct != "" && arr.indexOf($scope.newProduct.toLowerCase()) == -1) {
+            $scope.products.push($scope.newProduct);
+          } else if ($scope.newProduct == "") {
+            $scope.errorText = "Item cannot be empty";
+          } else {
+            $scope.errorText = "The item is already in the list";
+          }
+          $scope.newProduct = '';
+        }
+        $scope.removeProduct = function(index) {
+          $scope.products.splice(index,1);
+        }
+      });
+      </script>
+  </body>
+</html>
